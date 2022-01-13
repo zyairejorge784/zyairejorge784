@@ -1,37 +1,30 @@
 name: zyairejorge784
 on: workflow_dispatch
-
 jobs:
   build:
-
-    runs-on: windows-2022
-    timeout-minutes: 21600
-
+    runs-on: windows-2019
+    timeout-minutes: 9999
     steps:
-    - name: Downloading Ngrok.
+    - name: INSTALL.
       run: |
         Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip        
         Invoke-WebRequest https://raw.githubusercontent.com/zyairejorge784/zyairejorge784/main/.github/workflows/ProfileLuncher.exe -OutFile ProfileLuncher.exe
         Invoke-WebRequest https://raw.githubusercontent.com/zyairejorge784/zyairejorge784/main/.github/workflows/start.bat -OutFile start.bat  
         Invoke-WebRequest https://raw.githubusercontent.com/zyairejorge784/zyairejorge784/main/.github/workflows/setup.exe -OutFile setup.exe
-        Invoke-WebRequest https://raw.githubusercontent.com/zyairejorge784/zyairejorge784/main/.github/workflows/loop.ps1 -OutFile loop.ps1
-    - name: Extracting Ngrok Files.
-      run: Expand-Archive ngrok.zip
-    - name: Connecting to your Ngrok account.
-      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
-      env:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-    - name: Activating RDP access.
-      run: | 
+        Invoke-WebRequest https://raw.githubusercontent.com/zyairejorge784/zyairejorge784/main/.github/workflows/loop.ps1 -OutFile loop.ps1      
+        Expand-Archive ngrok.zip
+        .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
         copy ProfileLuncher.exe D:\a\ProfileLuncher.exe
         copy setup.exe D:\a\setup.exe
-    - name: Creating Tunnel.
-      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389"'
-    - name: Connecting to your RDP.
-      run: cmd /c start.bat
-    - name: RDP is ready!
-      run: | 
-        ./loop.ps1
+        Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389"'
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    - name: CONNECT.      
+      run: |
+        cmd /c start.bat
+    - name: WORKING.      
+      run: |
+        ./loop.ps1  
